@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', $mascota->nombre . ' - Detalles')
+@section('title', $mascota->nombre . ' - Detalles - Admin')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
@@ -8,7 +8,7 @@
             <h1 class="text-primary">
                 <i class="fas fa-paw mr-2"></i>{{ $mascota->nombre }}
             </h1>
-            <p class="text-muted mb-0">Detalles completos de la mascota</p>
+            <p class="text-muted mb-0">Detalles completos de la mascota - Vista Administrador</p>
         </div>
         <div class="text-right">
             <span class="badge badge-lg 
@@ -31,21 +31,12 @@
                     <i class="fas fa-info-circle mr-2"></i>Información de la Mascota
                 </h3>
                 <div class="card-tools">
-                    @if(!isset($isPublic))
-                    <a href="{{ route('user.mascotas.edit', $mascota) }}" class="btn btn-sm btn-warning mr-2">
+                    <a href="{{ route('admin.mascotas.edit', $mascota) }}" class="btn btn-sm btn-warning mr-2">
                         <i class="fas fa-edit mr-1"></i>Editar
                     </a>
-                    @endif
-                    
-                    @if(isset($isPublic))
-                    <a href="{{ route('mascotas.perdidas.index') }}" class="btn btn-sm btn-secondary">
-                        <i class="fas fa-arrow-left mr-1"></i>Volver Atras
+                    <a href="{{ route('admin.mascotas.index') }}" class="btn btn-sm btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>Volver al Listado
                     </a>
-                    @else
-                    <a href="{{ route('user.mascotas.index') }}" class="btn btn-sm btn-secondary">
-                        <i class="fas fa-arrow-left mr-1"></i>Volver
-                    </a>
-                    @endif
                 </div>
             </div>
             <div class="card-body">
@@ -139,7 +130,6 @@
         </div>
 
         <!-- Información del Dueño -->
-        @if(!isset($isPublic))
         <div class="card card-outline card-info elevation-2 mt-4">
             <div class="card-header">
                 <h3 class="card-title">
@@ -161,9 +151,13 @@
                         </p>
                     </div>
                 </div>
+                <div class="mt-3">
+                    <a href="{{ route('admin.users.show', $mascota->user) }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-external-link-alt mr-1"></i>Ver Perfil del Usuario
+                    </a>
+                </div>
             </div>
         </div>
-        @endif
     </div>
 
     <!-- Foto y Metadatos -->
@@ -193,95 +187,7 @@
             </div>
         </div>
 
-        <!-- Botones para Usuarios Interesados -->
-        @if(isset($isPublic))
-        <div class="card card-outline card-primary elevation-2 mt-4">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-handshake mr-2"></i>¿Te interesa esta mascota?
-                </h3>
-            </div>
-            <div class="card-body">
-                @if($mascota->estado == 'perdida')
-                    <!-- Botón para reclamar mascota perdida -->
-                    <div class="text-center mb-3">
-                        <p class="text-danger mb-3">
-                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                            <strong>¿Reconoces a {{ $mascota->nombre }}?</strong><br>
-                            Esta mascota está reportada como perdida.
-                        </p>
-                        @auth
-                            <a href="{{ route('contactar.create', $mascota) }}" class="btn btn-success btn-lg btn-block mb-2">
-                                <i class="fas fa-home mr-2"></i>Contactar al Dueño
-                            </a>
-                            <small class="text-muted">Solo si es tu mascota perdida</small>
-                        @else
-                            <a href="{{ route('login') }}" class="btn btn-success btn-lg btn-block mb-2">
-                                <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión para Contactar
-                            </a>
-                            <small class="text-muted">Debes iniciar sesión para contactar</small>
-                        @endauth
-                    </div>
-                
-                @elseif($mascota->estado == 'encontrada')
-                    <!-- Botón para rescatar mascota encontrada -->
-                    <div class="text-center mb-3">
-                        <p class="text-success mb-3">
-                            <i class="fas fa-home mr-2"></i>
-                            <strong>¿Puedes ayudar a {{ $mascota->nombre }}?</strong><br>
-                            Esta mascota fue encontrada y necesita un hogar temporal.
-                        </p>
-                        @auth
-                            <a href="{{ route('contactar.create', $mascota) }}" class="btn btn-warning btn-lg btn-block mb-2">
-                                <i class="fas fa-heart mr-2"></i>Ofrecer Ayuda
-                            </a>
-                            <small class="text-muted">Ofrece cuidado temporal</small>
-                        @else
-                            <a href="{{ route('login') }}" class="btn btn-warning btn-lg btn-block mb-2">
-                                <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión para Ayudar
-                            </a>
-                            <small class="text-muted">Debes iniciar sesión para ofrecer ayuda</small>
-                        @endauth
-                    </div>
-                
-                @elseif($mascota->estado == 'adopcion')
-                    <!-- Botón para adoptar mascota en adopción -->
-                    <div class="text-center mb-3">
-                        <p class="text-primary mb-3">
-                            <i class="fas fa-heart mr-2"></i>
-                            <strong>¿Quieres adoptar a {{ $mascota->nombre }}?</strong><br>
-                            Esta mascota busca un hogar permanente.
-                        </p>
-                        @auth
-                            <a href="{{ route('contactar.create', $mascota) }}" class="btn btn-primary btn-lg btn-block mb-2">
-                                <i class="fas fa-heart mr-2"></i>Solicitar Adopción
-                            </a>
-                            <small class="text-muted">Completa el formulario de contacto</small>
-                        @else
-                            <a href="{{ route('login') }}" class="btn btn-primary btn-lg btn-block mb-2">
-                                <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión para Adoptar
-                            </a>
-                            <small class="text-muted">Debes iniciar sesión para solicitar adopción</small>
-                        @endauth
-                    </div>
-                @endif
-
-                <!-- Información adicional -->
-                <div class="mt-3 p-3 bg-light rounded">
-                    <h6 class="text-center mb-2">
-                        <i class="fas fa-info-circle mr-2"></i>Importante
-                    </h6>
-                    <ul class="list-unstyled small mb-0">
-                        <li><i class="fas fa-check text-success mr-1"></i> Verifica tu información de contacto</li>
-                        <li><i class="fas fa-check text-success mr-1"></i> Sé responsable con tu decisión</li>
-                        <li><i class="fas fa-check text-success mr-1"></i> Contacta al dueño directamente</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <!-- Metadatos -->
+        <!-- Estadísticas Administrativas -->
         <div class="card card-outline card-warning elevation-2 mt-4">
             <div class="card-header">
                 <h3 class="card-title">
@@ -326,21 +232,29 @@
                             #{{ $mascota->id }}
                         </span>
                     </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>
+                            <i class="fas fa-user-tie mr-2 text-secondary"></i>
+                            ID del Dueño
+                        </span>
+                        <span class="badge badge-secondary badge-pill">
+                            #{{ $mascota->user_id }}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Acciones Rápidas -->
-        @if(!isset($isPublic))
+        <!-- Acciones Rápidas del Admin -->
         <div class="card card-outline card-danger elevation-2 mt-4">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-bolt mr-2"></i>Acciones Rápidas
+                    <i class="fas fa-bolt mr-2"></i>Acciones Administrativas
                 </h3>
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <a href="{{ route('user.mascotas.edit', $mascota) }}" class="btn btn-warning btn-block">
+                    <a href="{{ route('admin.mascotas.edit', $mascota) }}" class="btn btn-warning btn-block">
                         <i class="fas fa-edit mr-2"></i>Editar Mascota
                     </a>
                     
@@ -348,18 +262,53 @@
                         <i class="fas fa-trash mr-2"></i>Eliminar Mascota
                     </button>
                     
-                    <a href="{{ route('user.mascotas.index') }}" class="btn btn-secondary btn-block">
+                    <a href="{{ route('admin.users.show', $mascota->user) }}" class="btn btn-info btn-block">
+                        <i class="fas fa-user mr-2"></i>Ver Dueño
+                    </a>
+                    
+                    <a href="{{ route('admin.mascotas.index') }}" class="btn btn-secondary btn-block">
                         <i class="fas fa-list mr-2"></i>Ver Todas las Mascotas
                     </a>
                 </div>
             </div>
         </div>
-        @endif
+
+        <!-- Información del Estado -->
+        <div class="card card-outline 
+            @if($mascota->estado == 'perdida') card-danger
+            @elseif($mascota->estado == 'encontrada') card-success
+            @else card-warning @endif elevation-2 mt-4">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-info-circle mr-2"></i>Información del Estado
+                </h3>
+            </div>
+            <div class="card-body">
+                @if($mascota->estado == 'perdida')
+                    <div class="text-center text-danger">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                        <h5>Mascota Perdida</h5>
+                        <p class="mb-0">Esta mascota ha sido reportada como perdida. Se recomienda contactar al dueño si es encontrada.</p>
+                    </div>
+                @elseif($mascota->estado == 'encontrada')
+                    <div class="text-center text-success">
+                        <i class="fas fa-home fa-2x mb-2"></i>
+                        <h5>Mascota Encontrada</h5>
+                        <p class="mb-0">Esta mascota fue encontrada y está buscando a su dueño original.</p>
+                    </div>
+                @else
+                    <div class="text-center text-warning">
+                        <i class="fas fa-heart fa-2x mb-2"></i>
+                        <h5>En Adopción</h5>
+                        <p class="mb-0">Esta mascota está disponible para adopción y busca un hogar permanente.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Modal de Eliminación -->
-@if(!isset($isPublic))
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -375,25 +324,27 @@
                 <p>¿Estás seguro de que deseas eliminar a <strong>{{ $mascota->nombre }}</strong>?</p>
                 <p class="text-danger mb-0">
                     <i class="fas fa-info-circle mr-1"></i>
-                    Esta acción no se puede deshacer y se eliminarán todos los datos asociados.
+                    Esta acción no se puede deshacer y se eliminarán todos los datos asociados, incluyendo la foto.
                 </p>
+                <div class="alert alert-warning mt-3">
+                    <strong>Dueño afectado:</strong> {{ $mascota->user->name }} ({{ $mascota->user->email }})
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     <i class="fas fa-times mr-1"></i>Cancelar
                 </button>
-                <form action="{{ route('user.mascotas.destroy', $mascota) }}" method="POST" class="d-inline">
+                <form action="{{ route('admin.mascotas.destroy', $mascota) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash mr-1"></i>Eliminar
+                        <i class="fas fa-trash mr-1"></i>Eliminar Mascota
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-@endif
 @stop
 
 @section('css')
@@ -425,11 +376,6 @@
         border: none;
         padding: 0.75rem 0;
     }
-    .btn-lg {
-        padding: 12px 24px;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
 </style>
 @stop
 
@@ -451,7 +397,7 @@
         const deleteForm = document.querySelector('form[action*="destroy"]');
         if (deleteForm) {
             deleteForm.addEventListener('submit', function(e) {
-                if (!confirm('¿Estás completamente seguro de que quieres eliminar esta mascota? Esta acción es permanente.')) {
+                if (!confirm('¿Estás completamente seguro de que quieres eliminar esta mascota? Esta acción es permanente y afectará al dueño.')) {
                     e.preventDefault();
                 }
             });

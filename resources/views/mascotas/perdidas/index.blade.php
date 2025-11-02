@@ -112,15 +112,10 @@
                                     PERDIDA
                                 </span>
                                 
-                                @auth
-                                    <a href="{{ route('user.mascotas.show', $mascota) }}" class="text-red-600 font-medium text-sm hover:text-red-700 flex items-center transition-colors">
-                                        Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                                    </a>
-                                @else
-                                    <a href="{{ route('login') }}" class="text-red-600 font-medium text-sm hover:text-red-700 flex items-center transition-colors">
-                                        Iniciar sesión para ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                                    </a>
-                                @endauth
+                                <!-- ENLACE MODIFICADO: Ahora usa la ruta pública -->
+                                <a href="{{ route('mascotas.perdidas.show', $mascota) }}" class="text-red-600 font-medium text-sm hover:text-red-700 flex items-center transition-colors">
+                                    Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                </a>
                             </div>
                         </div>
                     </div>

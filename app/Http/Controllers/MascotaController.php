@@ -59,6 +59,45 @@ class MascotaController extends Controller
         return view('mascotas.adopcion.index', compact('mascotas'));
     }
 
+    /**
+     * Mostrar detalles públicos de una mascota perdida
+     */
+    public function showPublic(Mascota $mascota)
+    {
+        // Verificar que la mascota esté perdida
+        if ($mascota->estado !== 'perdida') {
+            abort(404, 'Mascota no encontrada o no está reportada como perdida');
+        }
+        
+        return view('mascotas.perdidas.show', compact('mascota'))->with('isPublic', true);
+    }
+
+    /**
+     * Mostrar detalles públicos de una mascota encontrada
+     */
+    public function showEncontradaPublic(Mascota $mascota)
+    {
+        // Verificar que la mascota esté encontrada
+        if ($mascota->estado !== 'encontrada') {
+            abort(404, 'Mascota no encontrada o no está reportada como encontrada');
+        }
+        
+        return view('mascotas.encontradas.show', compact('mascota'))->with('isPublic', true);
+    }
+
+    /**
+     * Mostrar detalles públicos de una mascota en adopción
+     */
+    public function showAdopcionPublic(Mascota $mascota)
+    {
+        // Verificar que la mascota esté en adopción
+        if ($mascota->estado !== 'adopcion') {
+            abort(404, 'Mascota no encontrada o no está disponible para adopción');
+        }
+        
+        return view('mascotas.adopcion.show', compact('mascota'))->with('isPublic', true);
+    }
+
     // ===================== MÉTODOS PRIVADOS PARA USUARIOS AUTENTICADOS =====================
     
     public function perdidas()
@@ -77,6 +116,54 @@ class MascotaController extends Controller
     {
         $mascotas = Auth::user()->mascotas()->where('estado', 'adopcion')->get();
         return view('user.mascotas.adopcion', compact('mascotas'));
+    }
+
+    // ===================== MÉTODOS NUEVOS PARA RUTAS PROTEGIDAS =====================
+
+    /**
+     * Mostrar formulario para crear mascota perdida
+     */
+    public function createPerdida()
+    {
+        return view('mascotas.create-perdida');
+    }
+
+    /**
+     * Mostrar formulario para crear mascota encontrada
+     */
+    public function createEncontrada()
+    {
+        return view('mascotas.create-encontrada');
+    }
+
+    /**
+     * Mostrar formulario para crear mascota en adopción
+     */
+    public function createAdopcion()
+    {
+        return view('mascotas.create-adopcion');
+    }
+
+    /**
+     * Mostrar formulario para reportar una mascota
+     */
+    public function reportar(Mascota $mascota)
+    {
+        return view('mascotas.reportar', compact('mascota'));
+    }
+
+    /**
+     * Redirigir al formulario de contacto
+     */
+    public function contactar(Mascota $mascota)
+    {
+        // Verificar que el usuario no sea el dueño
+        if (Auth::check() && Auth::id() === $mascota->user_id) {
+            return redirect()->back()->with('error', 'No puedes contactarte contigo mismo.');
+        }
+
+        // Redirigir al sistema de contacto original
+        return redirect()->route('contactar.create', $mascota);
     }
 
     public function store(Request $request)

@@ -51,7 +51,7 @@
                 <a href="{{ route('user.dashboard') }}" 
                    class="flex items-center px-4 py-2 text-gray-600 hover:text-green-600 transition-colors border border-gray-300 rounded-lg hover:border-green-300">
                     <i class="fas fa-arrow-left mr-2"></i>
-                    Volver al Panel
+                    Volver al inicio
                 </a>
             </div>
         </div>
@@ -185,6 +185,13 @@
 
                         <!-- Acciones -->
                         <div class="flex space-x-2 pt-4 border-t border-gray-200">
+                            <!-- Botón VER agregado -->
+                            <a href="{{ route('user.mascotas.show', $mascota) }}" 
+                               class="flex-1 flex items-center justify-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium">
+                                <i class="fas fa-eye mr-2"></i>
+                                Ver
+                            </a>
+                            
                             <a href="{{ route('user.mascotas.edit', $mascota) }}" 
                                class="flex-1 flex items-center justify-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-colors text-sm font-medium">
                                 <i class="fas fa-edit mr-2"></i>

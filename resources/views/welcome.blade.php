@@ -72,15 +72,20 @@
                                 {{ ucfirst($mascota->estado) }}
                             </span>
                             
-                            @auth
-                                <a href="{{ route('user.mascotas.show', $mascota) }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center transition-colors">
+                            <!-- ENLACE MODIFICADO: Ahora usa rutas públicas según el estado -->
+                            @if($mascota->estado == 'perdida')
+                                <a href="{{ route('mascotas.perdidas.show', $mascota) }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center transition-colors">
+                                    Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                </a>
+                            @elseif($mascota->estado == 'encontrada')
+                                <a href="{{ route('mascotas.encontradas.show', $mascota) }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center transition-colors">
                                     Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                 </a>
                             @else
-                                <a href="{{ route('login') }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center transition-colors">
-                                    Iniciar sesión para ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                <a href="{{ route('mascotas.adopcion.show', $mascota) }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center transition-colors">
+                                    Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                 </a>
-                            @endauth
+                            @endif
                         </div>
                     </div>
                 </div>

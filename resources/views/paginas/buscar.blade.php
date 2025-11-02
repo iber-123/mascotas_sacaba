@@ -2,102 +2,6 @@
 
 @section('title', 'Búsqueda de Mascotas - Sacaba')
 
-@push('styles')
-<style>
-    .filter-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-    .btn-primary {
-        background-color: #22c55e;
-        color: white;
-    }
-    .btn-primary:hover {
-        background-color: #16a34a;
-    }
-    .btn-secondary {
-        background-color: white;
-        color: #22c55e;
-        border: 2px solid #22c55e;
-    }
-    .btn-secondary:hover {
-        background-color: #f0fdf4;
-    }
-    .filter-select {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        background-color: white;
-        cursor: pointer;
-    }
-    .filter-select:focus {
-        outline: none;
-        border-color: #22c55e;
-        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
-    }
-    .search-input {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        font-size: 0.875rem;
-    }
-    .search-input:focus {
-        outline: none;
-        border-color: #22c55e;
-        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
-    }
-    .state-btn {
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .state-btn.active {
-        background-color: #22c55e;
-        color: white;
-    }
-    .state-btn:not(.active) {
-        background-color: #f9fafb;
-        color: #6b7280;
-    }
-    .state-btn:not(.active):hover {
-        background-color: #f3f4f6;
-    }
-    .empty-state {
-        text-align: center;
-        padding: 3rem 1rem;
-        color: #6b7280;
-    }
-    .empty-state i {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-        color: #d1d5db;
-    }
-    .mascota-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-        overflow: hidden;
-    }
-    .mascota-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-    .mascota-image {
-        height: 200px;
-        object-fit: cover;
-        width: 100%;
-    }
-</style>
-@endpush
-
 @section('content')
     <!-- Contenido Principal -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -108,7 +12,7 @@
         </div>
 
         <!-- Filtros de Búsqueda -->
-        <div class="filter-card p-6 mb-8">
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
             <h2 class="text-lg font-semibold text-gray-800 mb-4">Filtros de Búsqueda</h2>
             
             <form action="{{ route('buscar') }}" method="GET">
@@ -116,7 +20,7 @@
                     <!-- Estado -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-                        <select name="estado" class="filter-select">
+                        <select name="estado" class="w-full p-2 border border-gray-300 rounded-lg">
                             <option value="">Todos los estados</option>
                             <option value="perdida" {{ request('estado') == 'perdida' ? 'selected' : '' }}>Perdida</option>
                             <option value="encontrada" {{ request('estado') == 'encontrada' ? 'selected' : '' }}>Encontrada</option>
@@ -124,10 +28,10 @@
                         </select>
                     </div>
                     
-                    <!-- Tipo de Animal -->
+                    <!-- Especie -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Especie</label>
-                        <select name="especie" class="filter-select">
+                        <select name="especie" class="w-full p-2 border border-gray-300 rounded-lg">
                             <option value="">Todas las especies</option>
                             <option value="perro" {{ request('especie') == 'perro' ? 'selected' : '' }}>Perro</option>
                             <option value="gato" {{ request('especie') == 'gato' ? 'selected' : '' }}>Gato</option>
@@ -139,7 +43,7 @@
                     <!-- Tamaño -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tamaño</label>
-                        <select name="tamaño" class="filter-select">
+                        <select name="tamaño" class="w-full p-2 border border-gray-300 rounded-lg">
                             <option value="">Todos los tamaños</option>
                             <option value="pequeño" {{ request('tamaño') == 'pequeño' ? 'selected' : '' }}>Pequeño</option>
                             <option value="mediano" {{ request('tamaño') == 'mediano' ? 'selected' : '' }}>Mediano</option>
@@ -150,13 +54,13 @@
                     <!-- Color -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
-                        <input type="text" name="color" class="search-input" placeholder="Ej: negro, café, blanco..." value="{{ request('color') }}">
+                        <input type="text" name="color" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Ej: negro, café, blanco..." value="{{ request('color') }}">
                     </div>
                     
                     <!-- Ubicación -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Ubicación</label>
-                        <input type="text" name="ubicacion" class="search-input" placeholder="Ej: Centro, Villa Túnari..." value="{{ request('ubicacion') }}">
+                        <input type="text" name="ubicacion" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Ej: Centro, Villa Túnari..." value="{{ request('ubicacion') }}">
                     </div>
                 </div>
                 
@@ -164,27 +68,18 @@
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Buscar por nombre, raza o descripción</label>
                     <div class="flex space-x-2">
-                        <input type="text" name="q" class="search-input flex-1" placeholder="Escribe para buscar..." value="{{ request('q') }}">
-                        <!-- BOTÓN DE BÚSQUEDA PÚBLICO - SIN RESTRICCIÓN DE LOGIN -->
-                        <button type="submit" class="px-6 py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition-colors inline-flex items-center">
+                        <input type="text" name="q" class="flex-1 p-2 border border-gray-300 rounded-lg" placeholder="Escribe para buscar..." value="{{ request('q') }}">
+                        <button type="submit" class="px-6 py-2 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition-colors inline-flex items-center">
                             <i class="fas fa-search mr-2"></i>Buscar
                         </button>
                     </div>
-                </div>
-                
-                <!-- Botones de estado rápido -->
-                <div class="flex flex-wrap gap-2">
-                    <button type="button" class="state-btn active" data-estado="">Todos</button>
-                    <button type="button" class="state-btn" data-estado="perdida">Mascotas perdidas</button>
-                    <button type="button" class="state-btn" data-estado="encontrada">Mascotas encontradas</button>
-                    <button type="button" class="state-btn" data-estado="adopcion">En adopción</button>
                 </div>
             </form>
         </div>
         
         <!-- Resultados -->
-        <div class="filter-card p-6">
-            @if(isset($mascotas) && $mascotas->count())
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            @if($mascotas->count())
                 <!-- Información de búsqueda -->
                 @if(request()->hasAny(['q', 'estado', 'especie', 'tamaño', 'color', 'ubicacion']))
                 <div class="mb-6 p-4 bg-blue-50 rounded-lg">
@@ -208,11 +103,11 @@
                 <!-- Grid de mascotas -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($mascotas as $mascota)
-                    <div class="mascota-card">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
                         @if($mascota->foto)
-                        <img src="{{ asset('storage/' . $mascota->foto) }}" alt="{{ $mascota->nombre }}" class="mascota-image">
+                        <img src="{{ asset('storage/' . $mascota->foto) }}" alt="{{ $mascota->nombre }}" class="w-full h-48 object-cover">
                         @else
-                        <div class="mascota-image bg-gray-200 flex items-center justify-center">
+                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
                             <i class="fas fa-paw text-gray-400 text-4xl"></i>
                         </div>
                         @endif
@@ -244,23 +139,27 @@
                             </div>
                             
                             @if($mascota->descripcion)
-                            <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ Str::limit($mascota->descripcion, 100) }}</p>
+                            <p class="text-gray-600 text-sm mb-4">{{ Str::limit($mascota->descripcion, 100) }}</p>
                             @endif
                             
                             <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                                 <span class="text-xs text-gray-500">
                                     {{ $mascota->created_at->diffForHumans() }}
                                 </span>
-                                <!-- ENLACE CORREGIDO PARA VER DETALLES -->
-                                @auth
-                                    <a href="{{ route('user.mascotas.show', $mascota) }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center">
+                                <!-- Enlaces según estado -->
+                                @if($mascota->estado == 'perdida')
+                                    <a href="{{ route('mascotas.perdidas.show', $mascota) }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center">
+                                        Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                    </a>
+                                @elseif($mascota->estado == 'encontrada')
+                                    <a href="{{ route('mascotas.encontradas.show', $mascota) }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center">
                                         Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                     </a>
                                 @else
-                                    <a href="{{ route('login') }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center">
-                                        Iniciar sesión para ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                    <a href="{{ route('mascotas.adopcion.show', $mascota) }}" class="text-green-600 font-medium text-sm hover:text-green-700 flex items-center">
+                                        Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                     </a>
-                                @endauth
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -274,8 +173,8 @@
 
             @else
                 <!-- Estado vacío -->
-                <div class="empty-state">
-                    <i class="fas fa-search"></i>
+                <div class="text-center py-12">
+                    <i class="fas fa-search text-gray-400 text-6xl mb-4"></i>
                     <h3 class="text-xl font-semibold text-gray-700 mb-2">
                         @if(request()->hasAny(['q', 'estado', 'especie', 'tamaño', 'color', 'ubicacion']))
                             No se encontraron mascotas
@@ -297,7 +196,6 @@
                             </a>
                         @endif
                         
-                        <!-- Botón de reportar con verificación de autenticación -->
                         @auth
                             <a href="{{ route('user.mascotas.create') }}" class="px-4 py-2 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition-colors text-center">
                                 Reportar Mascota
@@ -313,57 +211,3 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-<script>
-    // Funcionalidad para los botones de estado
-    document.addEventListener('DOMContentLoaded', function() {
-        const stateButtons = document.querySelectorAll('.state-btn');
-        const estadoSelect = document.querySelector('select[name="estado"]');
-        
-        stateButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Remover la clase active de todos los botones
-                stateButtons.forEach(btn => btn.classList.remove('active'));
-                // Agregar la clase active al botón clickeado
-                this.classList.add('active');
-                
-                // Actualizar el select de estado
-                const estado = this.getAttribute('data-estado');
-                estadoSelect.value = estado;
-                
-                // Enviar el formulario automáticamente
-                this.closest('form').submit();
-            });
-        });
-        
-        // Inicializar el botón activo según el estado actual
-        const currentEstado = estadoSelect.value;
-        stateButtons.forEach(button => {
-            if (button.getAttribute('data-estado') === currentEstado) {
-                button.classList.add('active');
-            }
-        });
-        
-        // Auto-submit en cambio de selects
-        const filterSelects = document.querySelectorAll('.filter-select');
-        filterSelects.forEach(select => {
-            select.addEventListener('change', function() {
-                this.closest('form').submit();
-            });
-        });
-        
-        // Auto-submit en input de búsqueda después de un tiempo
-        let searchTimeout;
-        const searchInput = document.querySelector('input[name="q"]');
-        if (searchInput) {
-            searchInput.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    this.closest('form').submit();
-                }, 1000); // 1 segundo de delay
-            });
-        }
-    });
-</script>
-@endpush

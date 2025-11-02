@@ -318,6 +318,7 @@ return [
         'can' => 'acceso administrador',
         'text'   => 'Usuarios',
         'icon'   => 'fas fa-users',
+        'classes' => 'text-sm',
         'submenu' => [
             [
                 'can'   => 'acceso administrador',
@@ -338,42 +339,20 @@ return [
         'can' => 'acceso administrador',
         'text'   => 'Roles',
         'icon'   => 'fas fa-user-tag',
-        'submenu' => [
-            [
-                'can'   => 'acceso administrador', 
-                'text'  => 'Ver Roles',
-                'route' => 'admin.roles.index',
-                'icon' => 'fas fa-eye'
-            ],
-        ],
+        'route' => 'admin.roles.index',
+        'classes' => 'text-sm',
+        
     ],
-
+        // ==================== REPORTES ====================
     [
         'can' => 'acceso administrador',
-        'text'   => 'Permisos',
-        'icon'   => 'fas fa-key',
-        'submenu' => [
-            [
-                'can' => 'acceso administrador',
-                'text'  => 'Ver Permisos',
-                'route' => 'admin.permissions.index',
-                'icon'  => 'fas fa-eye'
-            ],
-            [
-                'can' => 'acceso administrador',
-                'text'  => 'Crear Permiso',
-                'route' => 'admin.permissions.create',
-                'icon'  => 'fas fa-plus-circle'
-            ],
+        'text'    => 'Reportes',
+        'icon' => 'fas fa-clipboard-list',
+        'route'  => 'admin.reportes.index',
+        'classes'=> 'bg-primary text-white shadow-sm',
+        'active'  => ['reportes.*'],
         ],
-    ],
 
-    [
-        'can' => 'acceso administrador',
-        'text'   => 'Reportes',
-        'icon'   => 'fas fa-chart-bar',
-        //'route'  => 'admin.reportes',
-    ],
 
     [
         'can' => 'acceso administrador',
@@ -390,11 +369,12 @@ return [
     ],
 
 
-    [ 'can' => 'acceso administrador',
+    [
+    'can' => 'acceso administrador',
     'text' => 'Todas las Mascotas',
-        //'url'  => 'admin/mascotas',
-        'icon' => 'fas fa-list',
-        'classes' => 'text-sm',
+    'route' => 'admin.mascotas.index',  
+    'icon' => 'fas fa-list',
+    'classes' => 'text-sm',
     ],
 ],
 

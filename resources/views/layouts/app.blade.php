@@ -51,7 +51,6 @@
             box-shadow: 0 8px 15px rgba(16, 185, 129, 0.35);
         }
         
-        /* Estilos mejorados para los enlaces de navegación */
         .nav-link {
             position: relative;
             padding: 0.5rem 1rem;
@@ -61,7 +60,6 @@
             color: #374151;
         }
         
-        /* Efectos de hover específicos para cada enlace */
         .nav-link.inicio:hover {
             background-color: rgba(16, 185, 129, 0.1);
             color: var(--primary);
@@ -92,7 +90,6 @@
             color: var(--primary);
         }
         
-        /* Estados activos con colores distintivos */
         .nav-link.inicio.active {
             background-color: rgba(16, 185, 129, 0.15);
             color: var(--primary);
@@ -129,7 +126,6 @@
             font-weight: 600;
         }
         
-        /* Línea inferior indicadora */
         .nav-link::after {
             content: '';
             position: absolute;
@@ -226,7 +222,6 @@
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
-        /* Mejoras para responsividad */
         @media (max-width: 768px) {
             .mobile-menu {
                 display: block;
@@ -236,20 +231,54 @@
             }
         }
 
-        /* Loading states */
         .loading {
             opacity: 0.7;
             pointer-events: none;
+        }
+
+        /* Estilos para la sidebar */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-content {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 320px;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar-content.active {
+            right: 0;
         }
     </style>
     @stack('styles')
 </head>
 <body class="bg-white">
-    <!-- Header mejorado -->
+    <!-- Header -->
     <header class="py-4 px-4 sm:px-6 sticky top-0 bg-white/95 backdrop-blur-sm z-50 shadow-sm border-b border-gray-100">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center">
-                <!-- Logo -->
                 <a href="{{ route('inicio') }}" class="flex items-center hover:opacity-80 transition-opacity">
                     <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mr-3 shadow-md">
                         <i class="fas fa-paw text-white text-sm sm:text-lg"></i>
@@ -261,7 +290,6 @@
                 </a>
             </div>
             
-            <!-- Menú de navegación mejorado -->
             <nav class="hidden md:flex space-x-1">
                 <a href="{{ route('inicio') }}" class="nav-link inicio {{ request()->routeIs('inicio') ? 'active' : '' }} flex items-center">
                     <i class="fas fa-home mr-2"></i>
@@ -281,20 +309,20 @@
                 </a>
             </nav>
 
-            <!-- Menú móvil -->
             <div class="md:hidden mobile-menu">
                 <button id="mobile-menu-button" class="text-gray-700 hover:text-green-600 transition-colors p-2">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
 
-            <!-- Botones de autenticación -->
             <div class="hidden md:flex items-center space-x-2">
                 @auth
-                    <a href="{{ url('/home') }}" class="nav-link login {{ request()->routeIs('home') ? 'active' : '' }} flex items-center">
-                        <i class="fas fa-user-circle mr-2"></i>
-                        Mi Cuenta
-                    </a>
+                    <!-- Botón Mi Cuenta -->
+                    <button onclick="openSidebar()" class="nav-link login flex items-center space-x-2">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Mi Cuenta</span>
+                    </button>
+
                     <a href="{{ route('user.mascotas.create') }}" class="btn-primary px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-semibold transition-all text-sm sm:text-base">
                         <i class="fas fa-plus-circle mr-2"></i> Reportar
                     </a>
@@ -312,7 +340,7 @@
             </div>
         </div>
 
-        <!-- Menú móvil desplegable mejorado -->
+        <!-- Menú Móvil -->
         <div id="mobile-menu" class="md:hidden hidden absolute top-full left-0 w-full bg-white shadow-lg border-t border-gray-200 py-4">
             <div class="flex flex-col space-y-3 px-6">
                 <a href="{{ route('inicio') }}" class="nav-link inicio {{ request()->routeIs('inicio') ? 'active' : '' }} py-2 flex items-center">
@@ -333,9 +361,29 @@
                         <a href="{{ route('user.mascotas.create') }}" class="btn-primary px-4 py-2.5 rounded-xl font-semibold transition-all text-center block">
                             <i class="fas fa-plus-circle mr-2"></i> Reportar Mascota
                         </a>
-                        <a href="{{ url('/home') }}" class="nav-link login {{ request()->routeIs('home') ? 'active' : '' }} py-2 flex items-center mt-2">
-                            <i class="fas fa-user-circle mr-3"></i> Mi Cuenta
+                        
+                        <a href="{{ route('afiches.create') }}" class="nav-link login py-2 flex items-center mt-2">
+                            <i class="fas fa-file-image mr-3"></i> Crear Afiche
                         </a>
+                        
+                        <a href="{{ route('user.perfil.edit') }}" class="nav-link login py-2 flex items-center">
+                            <i class="fas fa-user-edit mr-3"></i> Editar Perfil
+                        </a>
+                        
+                        <a href="{{ route('user.mascotas.index') }}" class="nav-link login py-2 flex items-center">
+                            <i class="fas fa-paw mr-3"></i> Mis Mascotas
+                        </a>
+                        
+                        <a href="{{ route('contactar.index') }}" class="nav-link login py-2 flex items-center">
+                            <i class="fas fa-envelope mr-3"></i> Mis Mensajes
+                        </a>
+                        
+                        <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                            @csrf
+                            <button type="submit" class="w-full text-left nav-link login py-2 flex items-center text-red-600">
+                                <i class="fas fa-sign-out-alt mr-3"></i> Cerrar Sesión
+                            </button>
+                        </form>
                     @else
                         <a href="{{ route('login') }}" class="btn-primary px-4 py-2.5 rounded-xl font-semibold transition-all text-center block">
                             <i class="fas fa-plus-circle mr-2"></i> Reportar Mascota
@@ -356,12 +404,62 @@
         </div>
     </header>
 
-    <!-- Contenido principal -->
+    <!-- Sidebar para Mi Cuenta -->
+    @auth
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="sidebar-content" id="sidebarContent">
+        <!-- Header Sidebar -->
+        <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-green-50 to-blue-50">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-gray-800">Mi Cuenta</h2>
+                <button onclick="closeSidebar()" class="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            <p class="text-gray-600 text-sm mt-2">Hola, {{ Auth::user()->name }}</p>
+        </div>
+
+        <!-- Navegación -->
+        <nav class="p-4 space-y-2">
+            <a href="{{ route('afiches.create') }}" onclick="closeSidebar()" class="flex items-center p-3 rounded-lg hover:bg-green-50 text-gray-700 hover:text-green-700 transition-colors border border-transparent hover:border-green-200">
+                <i class="fas fa-file-image w-6 text-green-600"></i>
+                <span class="ml-3 font-medium">Crear Afiche</span>
+            </a>
+            
+            <a href="{{ route('user.perfil.edit') }}" onclick="closeSidebar()" class="flex items-center p-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-700 transition-colors border border-transparent hover:border-blue-200">
+                <i class="fas fa-user-edit w-6 text-blue-600"></i>
+                <span class="ml-3 font-medium">Editar Perfil</span>
+            </a>
+            
+            <a href="{{ route('user.mascotas.index') }}" onclick="closeSidebar()" class="flex items-center p-3 rounded-lg hover:bg-purple-50 text-gray-700 hover:text-purple-700 transition-colors border border-transparent hover:border-purple-200">
+                <i class="fas fa-paw w-6 text-purple-600"></i>
+                <span class="ml-3 font-medium">Mis Mascotas</span>
+            </a>
+            
+            <a href="{{ route('contactar.index') }}" onclick="closeSidebar()" class="flex items-center p-3 rounded-lg hover:bg-yellow-50 text-gray-700 hover:text-yellow-700 transition-colors border border-transparent hover:border-yellow-200">
+                <i class="fas fa-envelope w-6 text-yellow-600"></i>
+                <span class="ml-3 font-medium">Mis Mensajes</span>
+            </a>
+
+            <!-- Separador -->
+            <div class="border-t border-gray-200 my-3"></div>
+
+            <!-- Cerrar Sesión -->
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" onclick="closeSidebar()" class="w-full flex items-center p-3 rounded-lg hover:bg-red-50 text-red-600 hover:text-red-700 transition-colors border border-transparent hover:border-red-200">
+                    <i class="fas fa-sign-out-alt w-6"></i>
+                    <span class="ml-3 font-medium">Cerrar Sesión</span>
+                </button>
+            </form>
+        </nav>
+    </div>
+    @endauth
+
     <main class="min-h-screen">
         @yield('content')
     </main>
 
-    <!-- Footer Mejorado -->
     <footer class="bg-gray-900 text-white pt-12 pb-8">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
@@ -429,16 +527,34 @@
     </footer>
 
     <script>
-        // JavaScript para interactividad
+        // Funciones para la sidebar
+        function openSidebar() {
+            document.getElementById('sidebarOverlay').classList.add('active');
+            document.getElementById('sidebarContent').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('sidebarContent').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cerrar sidebar con ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+
+        // Menú móvil
         document.addEventListener('DOMContentLoaded', function() {
-            // Menú móvil
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
 
             if (mobileMenuButton && mobileMenu) {
                 mobileMenuButton.addEventListener('click', function() {
                     mobileMenu.classList.toggle('hidden');
-                    // Cambiar ícono
                     const icon = mobileMenuButton.querySelector('i');
                     if (mobileMenu.classList.contains('hidden')) {
                         icon.className = 'fas fa-bars text-xl';
@@ -447,7 +563,6 @@
                     }
                 });
 
-                // Cerrar menú al hacer clic en un enlace
                 mobileMenu.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', function() {
                         mobileMenu.classList.add('hidden');
@@ -455,7 +570,6 @@
                     });
                 });
 
-                // Cerrar menú al hacer clic fuera
                 document.addEventListener('click', function(event) {
                     if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
                         mobileMenu.classList.add('hidden');
@@ -464,7 +578,6 @@
                 });
             }
 
-            // Efecto de aparición suave al hacer scroll
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
@@ -479,7 +592,6 @@
                 });
             }, observerOptions);
             
-            // Aplicar a las tarjetas y otros elementos animables
             document.querySelectorAll('.feature-card, .stat-card, .fade-in-up').forEach(element => {
                 element.style.opacity = 0;
                 element.style.transform = 'translateY(20px)';
@@ -487,7 +599,6 @@
                 observer.observe(element);
             });
 
-            // Prevenir envío múltiple de formularios
             document.querySelectorAll('form').forEach(form => {
                 form.addEventListener('submit', function() {
                     const submitButton = this.querySelector('button[type="submit"], input[type="submit"]');

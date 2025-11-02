@@ -11,15 +11,25 @@ class Reporte extends Model
     protected $fillable = [
         'user_id',
         'mascota_id',
-        'estado',
-        'ubicacion',
-        'sexo',
-        'edad',
-        'raza',
-        'color',
-        'fecha',
+        'tipo',
+        'titulo', 
         'descripcion',
-        'foto'
+        'ubicacion',
+        'fecha_incidente',
+        'estado',
+        'prioridad',
+        'notas',
+        'comentarios_admin',
+        'archivos',
+        'datos', // para reportes estadísticos
+        'configuracion' // para reportes estadísticos
+    ];
+
+    protected $casts = [
+        'fecha_incidente' => 'datetime',
+        'archivos' => 'array',
+        'datos' => 'array',
+        'configuracion' => 'array'
     ];
 
     public function mascota()

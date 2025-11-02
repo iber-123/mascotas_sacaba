@@ -119,15 +119,10 @@
                                     EN ADOPCIÓN
                                 </span>
                                 
-                                @auth
-                                    <a href="{{ route('user.mascotas.show', $mascota) }}" class="text-purple-600 font-medium text-sm hover:text-purple-700 flex items-center transition-colors">
-                                        Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                                    </a>
-                                @else
-                                    <a href="{{ route('login') }}" class="text-purple-600 font-medium text-sm hover:text-purple-700 flex items-center transition-colors">
-                                        Iniciar sesión para ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                                    </a>
-                                @endauth
+                                <!-- ENLACE MODIFICADO: Ahora usa la ruta pública -->
+                                <a href="{{ route('mascotas.adopcion.show', $mascota) }}" class="text-purple-600 font-medium text-sm hover:text-purple-700 flex items-center transition-colors">
+                                    Ver detalles <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
